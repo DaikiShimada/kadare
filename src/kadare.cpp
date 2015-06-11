@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <kadare/kadare.hpp>
 
-using namespace kadare;
+namespace kadare{
 
 /*
 	String Util
@@ -128,4 +128,5 @@ void DataManager::readHeader()
 		std::getline(ifs, buf);
 	}
 	ifs.close();
+}
 }
