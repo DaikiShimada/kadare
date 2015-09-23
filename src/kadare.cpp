@@ -32,7 +32,8 @@ std::vector<std::string> split(const std::string& str, char delim)
 	return splited;
 }
 
-DataManager::DataManager()
+template<typename Key_type, typename Value_type>
+DataManager<Key_type, Value_type>::DataManager()
 {
 	cur = 0;
 	records = 0;

@@ -11,6 +11,7 @@ namespace kadare{
 void deleteSpace(std::string& buf);
 std::vector<std::string> split(const std::string& str, char delim);
 
+template<typename Key_type, typename Value_type>
 class DataManager
 {
 public:
