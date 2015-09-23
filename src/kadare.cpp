@@ -16,19 +16,29 @@ void deleteSpace(std::string& buf)
 	}
 }
 
-std::vector<std::string> split(const std::string& str, char delim)
+template<typename T>
+T lexical_cast(const std::string &src)
 {
-	std::vector<std::string> splited;
+	T dst;
+	std::istringstream(src) >> dst;
+	return dst;
+}
+
+
+template<typename T>
+std::vector<T> split(const std::string& str, char delim)
+{
+	std::vector<T> splited;
 	int cur = 0;
 	int found;
 
 	while ((found=str.find_first_of(delim, cur)) != std::string::npos)
 	{
-		splited.push_back(std::string(str, cur, found-cur));
+		splited.push_back(lexical_cast<T>(std::string(str, cur, found-cur)));
 		cur = found + 1;
 	}
 
-	splited.push_back(std::string(str, cur, str.size()-cur));
+	splited.push_back(lexical_cast<T>(std::string(str, cur, str.size()-cur)));
 	return splited;
 }
 
@@ -43,7 +53,8 @@ DataManager<Key_type, Value_type>::DataManager()
 	dbdir = "./";
 }
 
-DataManager::DataManager(const DataManager& obj)
+template<typename Key_type, typename Value_type>
+DataManager<Key_type, Value_type>::DataManager(const DataManager<Key_type, Value_type>& obj)
 {
 	this->dbfile = obj.getDbfile();
 	this->dbdir = obj.getDbdir();
@@ -53,18 +64,21 @@ DataManager::DataManager(const DataManager& obj)
 	this->value_dim = obj.getValue_dim();
 }
 
-DataManager::DataManager(const std::string& dbdir, const std::string& dbfile)
+template<typename Key_type, typename Value_type>
+DataManager<Key_type, Value_type>::DataManager(const std::string& dbdir, const std::string& dbfile)
 {
 	setDbdir(dbdir);
 	setDbfile(dbfile);
 }
 
-DataManager::~DataManager()
+template<typename Key_type, typename Value_type>
+DataManager<Key_type, Value_type>::~DataManager()
 {
 	/* nop */
 }
 
-void DataManager::setDbfile(const std::string& dbfile)
+template<typename Key_type, typename Value_type>
+void DataManager<Key_type, Value_type>::setDbfile(const std::string& dbfile)
 {
 	this->dbfile = dbfile;
 	std::ifstream ifs(dbdir + "/" + dbfile);
@@ -77,18 +91,21 @@ void DataManager::setDbfile(const std::string& dbfile)
 	records = key.size();
 }
 
-void DataManager::setDbfile(const std::string& dbdir, const std::string& dbfile)
+template<typename Key_type, typename Value_type>
+void DataManager<Key_type, Value_type>::setDbfile(const std::string& dbdir, const std::string& dbfile)
 {
 	setDbdir(dbdir);
 	setDbfile(dbfile);
 }
 
-void DataManager::setDbdir(const std::string& dbdir)
+template<typename Key_type, typename Value_type>
+void DataManager<Key_type, Value_type>::setDbdir(const std::string& dbdir)
 {
 	this->dbdir = dbdir;
 }
 
-void DataManager::load()
+template<typename Key_type, typename Value_type>
+void DataManager<Key_type, Value_type>::load()
 {
 	cur++;
 	if (cur >= records)
@@ -99,7 +116,8 @@ void DataManager::load()
 	value_data = value[cur];
 }
 
-void DataManager::readHeader()
+template<typename Key_type, typename Value_type>
+void DataManager<Key_type, Value_type>::readHeader()
 {
 	std::ifstream ifs(dbdir + "/" + dbfile);
 	bool hasHeader = false;
@@ -112,7 +130,7 @@ void DataManager::readHeader()
 		if (buf[0] == '@')
 		{
 			// header
-			std::vector<std::string> header = split(buf, ',');		
+			std::vector<std::string> header = split<std::string>(buf, ',');		
 			key_dim = std::atoi(header[1].c_str());
 			value_dim = std::atoi(header[2].c_str());
 
@@ -121,9 +139,9 @@ void DataManager::readHeader()
 		else if (hasHeader)
 		{
 			// contents
-			std::vector<std::string> content = split(buf, '\t');
-			key.push_back(split(content[0], ','));
-			value.push_back(split(content[1], ','));
+			std::vector<std::string> content = split<std::string>(buf, '\t');
+			key.push_back(split<Key_type>(content[0], ','));
+			value.push_back(split<Value_type>(content[1], ','));
 		}
 
 		std::getline(ifs, buf);
