@@ -1,0 +1,4 @@
+@,3,1
+good,great,good	accept
+bad,good,bad	deny
+good,good,bad	accept
