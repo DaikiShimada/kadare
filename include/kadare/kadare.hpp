@@ -2,8 +2,9 @@
 #define KANTOKU_DATABASE_READER
 
 #include <iostream>
-#include <cstdlib>
 #include <string>
+#include <sstream>
+#include <cstdlib>
 #include <vector>
 #include <fstream>
 
