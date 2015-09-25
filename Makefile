@@ -1,14 +1,14 @@
-CC = g++
-CFLAGS = -O3 -std=c++11
+CXX = g++
+CXXFLAGS = -O3 -std=c++11
+INCLUDE = -Iinclude
+EXAMPLE_DIR := example
+EXAMPLE_SRC := $(wildcard $(EXAMPLE_DIR)/*.cpp)
+EXAMPLE_BIN := $(addprefix ./, $(EXAMPLE_SRC:.cpp=.bin))
 
-.PHONY: all install
+.PHONY: all 
 
+all : $(EXAMPLE_BIN)
 
-all : libkadare.so
-
-libkadare.so : src/kadare.cpp include/kadare/kadare.hpp
-	$(CC) $(CFLAGS) -Iinclude -shared -fPIC -o libkadare.so src/kadare.cpp
-
-install :
-	cp -r include/kadare /usr/local/include/
-	cp libkadare.so /usr/local/lib/ 
+# make example
+%.bin : $(EXAMPLE_SRC)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ $<
