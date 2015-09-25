@@ -12,6 +12,7 @@ namespace kadare{
 
 void deleteSpace(std::string& buf);
 template<typename T> std::vector<T> split(const std::string& str, char delim);
+std::vector<std::string> splitStr(const std::string& str, char delim);
 
 template<typename Key_type, typename Value_type>
 class DataManager
@@ -62,7 +63,8 @@ template<typename T>
 T lexical_cast(const std::string &src)
 {
 	T dst;
-	std::istringstream(src) >> dst;
+	std::istringstream is(src);
+	is >> dst;
 	return dst;
 }
 
@@ -84,6 +86,21 @@ std::vector<T> split(const std::string& str, char delim)
 	return splited;
 }
 
+std::vector<std::string> splitStr(const std::string& str, char delim)
+{
+	std::vector<std::string> splited;
+	int cur = 0;
+	int found;
+
+	while ((found=str.find_first_of(delim, cur)) != std::string::npos)
+	{
+		splited.push_back(std::string(str, cur, found-cur));
+		cur = found + 1;
+	}
+
+	splited.push_back(std::string(str, cur, str.size()-cur));
+	return splited;
+}
 template<typename Key_type, typename Value_type>
 DataManager<Key_type, Value_type>::DataManager()
 {
@@ -172,7 +189,7 @@ void DataManager<Key_type, Value_type>::readHeader()
 		if (buf[0] == '@')
 		{
 			// header
-			std::vector<std::string> header = split<std::string>(buf, ',');		
+			std::vector<std::string> header = splitStr(buf, ',');		
 			key_dim = std::atoi(header[1].c_str());
 			value_dim = std::atoi(header[2].c_str());
 
@@ -181,7 +198,7 @@ void DataManager<Key_type, Value_type>::readHeader()
 		else if (hasHeader)
 		{
 			// contents
-			std::vector<std::string> content = split<std::string>(buf, '\t');
+			std::vector<std::string> content = splitStr(buf, '\t');
 			key.push_back(split<Key_type>(content[0], ','));
 			value.push_back(split<Value_type>(content[1], ','));
 		}
