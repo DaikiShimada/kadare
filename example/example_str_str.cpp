@@ -5,12 +5,18 @@
 int main(int argc, char* argv[])
 {
 	std::string data_file = "data/test_str_str.data";
-	kadare::DataManager<std::string, std::string> x(data_file);
+	kadare::DataManager<std::string, std::string> dm(data_file);
+
+	std::cout << "Input file name: " << dm.getDbfile() << std::endl;
+	std::cout << "# of Records: " << dm.getRecords() << std::endl;
+	std::cout << "Key dimension: " << dm.getKey_dim() << std::endl;
+	std::cout << "Value dimension: " << dm.getValue_dim() << std::endl;
 
 	// load data
-	for (int i=0; i<x.getRecords(); ++i)
+	std::cout << "Data: " << std::endl;
+	for (int i=0; i<dm.getRecords(); ++i)
 	{
-		std::pair<std::vector<std::string>, std::vector<std::string> > d = x.load();
+		std::pair<std::vector<std::string>, std::vector<std::string> > d = dm.load();
 		std::vector<std::string>::iterator key_itr = d.first.begin();
 		std::vector<std::string>::iterator value_itr = d.second.begin();
 		
@@ -24,5 +30,6 @@ int main(int argc, char* argv[])
 
 		std::cout << std::endl;
 	}
+
 	return 0;
 }

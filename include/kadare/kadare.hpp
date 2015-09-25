@@ -1,6 +1,7 @@
 #ifndef KANTOKU_DATABASE_READER
 #define KANTOKU_DATABASE_READER
 
+#include <iostream>
 #include <utility>
 #include <string>
 #include <sstream>

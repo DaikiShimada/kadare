@@ -1,6 +1,6 @@
 # This is test data for kadare example.
 # If you want to write any comment, you can do like this.
 @,3,1
-good,great,so_good	accept
+good,great,so good	accept
 bad,good,bad	deny
 good,good,bad	accept
