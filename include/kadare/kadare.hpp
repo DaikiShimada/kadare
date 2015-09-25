@@ -12,6 +12,7 @@ namespace kadare{
 
 /* utility functions */
 void deleteSpace(std::string& buf);
+template<typename T> T lexical_cast(const std::string &src);
 template<typename T> std::vector<T> split(const std::string& str, char delim);
 
 /* DataManager class */
