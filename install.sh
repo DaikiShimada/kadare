@@ -6,5 +6,5 @@ if [ ! -e ${incdir} ]; then
 	sudo mkdir ${incdir}
 fi
 
-cp ./include/*.{h,hpp} ${incdir}
+cp ./include/kadare/*.hpp ${incdir}
 echo "Installation done."
